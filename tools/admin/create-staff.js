@@ -1,10 +1,15 @@
 // One-time script to create staff auth accounts.
-// Run: node create-staff.js
+// Run: node --env-file=.env create-staff.js
 
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = 'https://asygijgyvplutjujdiic.supabase.co';
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzeWdpamd5dnBsdXRqdWpkaWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTU4MzEzNywiZXhwIjoyMDk1MTU5MTM3fQ.zJy1w4Ziyy5cpTBpj9pNaqJzzFdI_MnGwvigolZ9s1o';
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
+const SERVICE_ROLE_KEY = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+if (!SUPABASE_URL || !SERVICE_ROLE_KEY) {
+  console.error('Missing VITE_SUPABASE_URL or VITE_SUPABASE_SERVICE_ROLE_KEY. Run with: node --env-file=.env create-staff.js');
+  process.exit(1);
+}
 
 const admin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },

@@ -1,11 +1,18 @@
 // Seed family_week_assignments for marathon 2 (Call of Duty) from the printed schedule.
-// Run: node seed-assignments.js
+// Run: node --env-file=.env seed-assignments.js
 
 import { createClient } from '@supabase/supabase-js';
 
+const { VITE_SUPABASE_URL, VITE_SUPABASE_SERVICE_ROLE_KEY } = process.env;
+
+if (!VITE_SUPABASE_URL || !VITE_SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('Missing VITE_SUPABASE_URL or VITE_SUPABASE_SERVICE_ROLE_KEY. Run with: node --env-file=.env seed-assignments.js');
+  process.exit(1);
+}
+
 const db = createClient(
-  'https://asygijgyvplutjujdiic.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFzeWdpamd5dnBsdXRqdWpkaWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3OTU4MzEzNywiZXhwIjoyMDk1MTU5MTM3fQ.zJy1w4Ziyy5cpTBpj9pNaqJzzFdI_MnGwvigolZ9s1o',
+  VITE_SUPABASE_URL,
+  VITE_SUPABASE_SERVICE_ROLE_KEY,
   { auth: { autoRefreshToken: false, persistSession: false } },
 );
 
